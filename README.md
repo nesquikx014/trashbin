@@ -8,6 +8,7 @@ Arduino sketch for a trash-bin jump scare: two ultrasonic sensors watch for peop
 
 Adjust distances, servo limits, or timing at the top of `trashbin.ino` to fit your build.
 
+![Scamatic](screenshot-1.png)
 
 <div align="center">
   <a href="https://moonshot.hackclub.com" target="_blank">
@@ -16,3 +17,7 @@ Adjust distances, servo limits, or timing at the top of `trashbin.ino` to fit yo
          style="width: 100%;">
   </a>
 </div>
+
+
+<video class="journal-video" controls playsinline style="aspect-ratio: 2160/3840;" src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/cc011139dd6296c27912b7d7d9b3e75693dc8d07_tmp_3Achat_3A2025-11-02_3Acmh69pxsq00cop401dxr6jvx8_3Adb80fe575ddba916"></video>
+<video class="journal-video" controls playsinline style="aspect-ratio: 2160/3840;" src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/378a4e8e3ee834eae5dc67edbf6bcdab10e5cb80_tmp_3Achat_3A2025-11-02_3Acmh69pxsq00cop401dxr6jvx8_3A7c3b90f674708059"></video>
