@@ -97,6 +97,9 @@ Program the Arduino for detection, motor control, and sound.
 ## Issues and fixes
 - Sensor spikes at startup fixed with boot delay.
 
+## Source Code
+Here is the [Source Code](https://github.com/Nickdev8/trashbin/blob/main/trashbin.ino) running on the ardiuno
+
 ## Picture
 ![](https://hc-cdn.hel1.your-objectstorage.com/s/v3/f85d969ce94a9c3882896d554be96e0c96b3acfa_tmp_3Achat_3A2025-11-02_3Acmh69pxsq00cop401dxr6jvx8_3Ab82ec6639c4d5a46)
 
