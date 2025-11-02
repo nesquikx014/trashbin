@@ -1,6 +1,6 @@
 # Disco Trashbin - Illustrator Design and Layout
 **Author:** Nasi  
-**Time spent:** 5.75 hours
+**Time spent:** 6.5 hours
 
 ## Intention
 Design the panel layout and component positions.
@@ -23,7 +23,7 @@ Design the panel layout and component positions.
 
 # Disco Trashbin - Frame Construction
 **Author:** Nasi  
-**Time spent:** 6.5 hours
+**Time spent:** 7.0 hours
 
 ## Intention
 Assemble the wooden frame.
@@ -46,7 +46,7 @@ Assemble the wooden frame.
 
 # Disco Trashbin - Panels, Shelves, Supports
 **Author:** Nasi  
-**Time spent:** 5.25 hours
+**Time spent:** 6.0 hours
 
 ## Intention
 Finish internal structure.
@@ -72,7 +72,7 @@ Finish internal structure.
 
 # Disco Trashbin - ESP32 LED System and Effects
 **Author:** Nasi  
-**Time spent:** 8.0 hours
+**Time spent:** 9.0 hours
 
 ## Intention
 Program LED animations and sync with Arduino.
@@ -95,7 +95,7 @@ Program LED animations and sync with Arduino.
 
 # Disco Trashbin - LED Mounts and Top Assembly
 **Author:** Nasi  
-**Time spent:** 5.25 hours
+**Time spent:** 6.5 hours
 
 ## Intention
 Install LED posts around the disco ball.
@@ -120,7 +120,7 @@ Install LED posts around the disco ball.
 
 # Disco Trashbin - Painting and Finish
 **Author:** Nasi  
-**Time spent:** 5.0 hours
+**Time spent:** 6.5 hours
 
 ## Intention
 Paint the exterior.
@@ -146,7 +146,7 @@ Paint the exterior.
 
 # Disco Trashbin - Wiring Support and curtain
 **Author:** Nasi  
-**Time spent:** 6.0 hours
+**Time spent:** 7.5 hours
 
 ## Intention
 Finish LED wiring and install window.
@@ -171,7 +171,7 @@ Finish LED wiring and install window.
 
 # Disco Trashbin - Final Test and Disco Ball Setup
 **Author:** Nasi  
-**Time spent:** 6.0 hours
+**Time spent:** 7.0 hours
 
 ## Intention
 Test full show and tune LED timing.
