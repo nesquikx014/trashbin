@@ -1,6 +1,4 @@
-# Disco Trashbin - Illustrator Design and Layout
-**Author:** Nasi  
-**Time spent:** 6.5 hours
+6.5 hours
 
 ## Intention
 Design the panel layout and component positions.
@@ -21,9 +19,12 @@ Design the panel layout and component positions.
 ![](https://hc-cdn.hel1.your-objectstorage.com/s/v3/0febb45b7beb44a15793a194008ac575a27be96b_tmp_3Achat_3A2025-11-02_3Acmh69pxsq00cop401dxr6jvx8_3Ade3fc6d97283b398)
 
 
-# Disco Trashbin - Frame Construction
-**Author:** Nasi  
-**Time spent:** 7.0 hours
+
+
+
+
+
+7.0 hours
 
 ## Intention
 Assemble the wooden frame.
@@ -44,9 +45,11 @@ Assemble the wooden frame.
 ![](https://hc-cdn.hel1.your-objectstorage.com/s/v3/989bdccbb063d76f13ebe8bf9132b20f00e648e4_tmp_3Achat_3A2025-11-02_3Acmh69pxsq00cop401dxr6jvx8_3Ae2413984584cd47c)
 
 
-# Disco Trashbin - Panels, Shelves, Supports
-**Author:** Nasi  
-**Time spent:** 6.0 hours
+
+
+
+
+6.0 hours
 
 ## Intention
 Finish internal structure.
@@ -70,9 +73,10 @@ Finish internal structure.
 
 
 
-# Disco Trashbin - ESP32 LED System and Effects
-**Author:** Nasi  
-**Time spent:** 9.0 hours
+
+
+
+9.0 hours
 
 ## Intention
 Program LED animations and sync with Arduino.
@@ -93,9 +97,12 @@ Program LED animations and sync with Arduino.
 <video class="journal-video" controls playsinline style="aspect-ratio: 390/848;" src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/9b8a4719610281b391557538d4913e0102d56557_tmp_3Achat_3A2025-11-02_3Acmh69pxsq00cop401dxr6jvx8_3Adde9be74d06266a5"></video>
 <video class="journal-video" controls playsinline style="aspect-ratio: 390/848;" src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/9b8a4719610281b391557538d4913e0102d56557_tmp_3Achat_3A2025-11-02_3Acmh69pxsq00cop401dxr6jvx8_3Ac2061d1ff6119ea6"></video>
 
-# Disco Trashbin - LED Mounts and Top Assembly
-**Author:** Nasi  
-**Time spent:** 6.5 hours
+
+
+
+
+
+6.5 hours
 
 ## Intention
 Install LED posts around the disco ball.
@@ -118,9 +125,11 @@ Install LED posts around the disco ball.
 
 
 
-# Disco Trashbin - Painting and Finish
-**Author:** Nasi  
-**Time spent:** 6.5 hours
+
+
+
+
+6.5 hours
 
 ## Intention
 Paint the exterior.
@@ -144,9 +153,12 @@ Paint the exterior.
 
 
 
-# Disco Trashbin - Wiring Support and curtain
-**Author:** Nasi  
-**Time spent:** 7.5 hours
+
+
+
+
+
+7.5 hours
 
 ## Intention
 Finish LED wiring and install window.
@@ -169,9 +181,14 @@ Finish LED wiring and install window.
 
 
 
-# Disco Trashbin - Final Test and Disco Ball Setup
-**Author:** Nasi  
-**Time spent:** 7.0 hours
+
+
+
+
+
+
+
+7.0 hours
 
 ## Intention
 Test full show and tune LED timing.
