@@ -1,3 +1,7 @@
+https://github.com/Nickdev8/trashbin
+https://photos.nickesselman.nl/s/1234
+https://photos.nickesselman.nl/s/431
+
 # Trash Bin Prank Rig
 
 Arduino sketch for a trash-bin jump scare: two ultrasonic sensors watch for people, a servo opens the lid, and an Adafruit Music Maker shield plays MP3s while an auxiliary NPN output flashes external FX.
