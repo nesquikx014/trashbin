@@ -25,7 +25,7 @@
 #define SERVO_HOLD_MS 1000UL
 #define SERVO_MIN     5
 #define SERVO_MAX     30
-#define SERVO_COOLDOWN_MS 30000UL
+#define SERVO_COOLDOWN_MS 0UL  // Temporarily disable cooldown for rapid triggers
 
 
 Servo triggerServo;
@@ -37,7 +37,7 @@ unsigned long lastServoMoveMs = 0;
 #define MUTE_INTERVAL_MS 200UL
 #define TRIGGER_CM     20.0f
 #define MAX_VALID_CM   20.0f
-#define TIMEOUT_US     7000UL
+#define TIMEOUT_US     6000UL
 #define PING_GAP_MS  100UL
 
 
@@ -45,7 +45,9 @@ unsigned long lastServoMoveMs = 0;
 #define OUT_PULSE_MS          1000UL
 #define PULSE_ARM_TIMEOUT_MS   300UL
 #define TRIGGER_CONFIRMATIONS     5
-#define TRIGGER_HOLD_MS         50UL
+#define TRIGGER_HOLD_MS          0UL
+#define TRIGGER_RELEASE_MARGIN_CM 5.0f
+#define TRIGGER_RELEASE_CONFIRMATIONS 3
 #define MAX_RANDOM_TRACKS        32
 
 // Debug control
@@ -63,9 +65,10 @@ bool idlePlaying = false;
 bool idleSuppressed = false;
 unsigned long lastIdleStartMs = 0;
 
-// Random playback state (non-repeating)
-bool randomTrackUsed[MAX_RANDOM_TRACKS];
+// Random playback state (shuffled per boot, sequential playback)
+char randomTracks[MAX_RANDOM_TRACKS][13];
 uint8_t randomTrackCount = 0;
+uint8_t nextRandomIndex = 0;
 
 bool isPlayableMp3(const char *name) {
   if (!name) return false;
@@ -202,14 +205,8 @@ void serviceIdlePlayback() {
   }
 }
 
-void resetRandomPlaylistUsage() {
-  for (uint8_t i = 0; i < randomTrackCount; ++i) {
-    randomTrackUsed[i] = false;
-  }
-}
-
 void refreshRandomTrackList() {
-  File dir = SD.open("/");
+  File dir = SD.open("/", FILE_READ);
   if (!dir) {
     Serial.println(F("Failed to open SD root while building playlist. Retrying..."));
 
@@ -219,7 +216,7 @@ void refreshRandomTrackList() {
       return;
     }
 
-    dir = SD.open("/");
+    dir = SD.open("/", FILE_READ);
     if (!dir) {
       Serial.println(F("Retry failed; random playlist unavailable."));
       randomTrackCount = 0;
@@ -234,7 +231,12 @@ void refreshRandomTrackList() {
 
     if (!entry.isDirectory() && isPlayableMp3(entry.name())) {
       if (count < MAX_RANDOM_TRACKS) {
-        randomTrackUsed[count] = false;
+        const char *entryName = entry.name();
+        uint8_t j = 0;
+        for (; entryName[j] != '\0' && j < 12; ++j) {
+          randomTracks[count][j] = entryName[j];
+        }
+        randomTracks[count][j] = '\0';
         count++;
       } else {
         Serial.println(F("Random playlist full; ignoring extra tracks."));
@@ -245,6 +247,20 @@ void refreshRandomTrackList() {
   dir.close();
 
   randomTrackCount = count;
+  nextRandomIndex = 0;
+
+  if (randomTrackCount > 1) {
+    for (int i = randomTrackCount - 1; i > 0; --i) {
+      int j = random(i + 1);
+      if (j != i) {
+        char temp[13];
+        memcpy(temp, randomTracks[i], sizeof(temp));
+        memcpy(randomTracks[i], randomTracks[j], sizeof(temp));
+        memcpy(randomTracks[j], temp, sizeof(temp));
+      }
+    }
+  }
+
   if (randomTrackCount > 0) {
     Serial.print(F("Random pool size: "));
     Serial.println(randomTrackCount);
@@ -263,70 +279,19 @@ bool playRandomMp3() {
     return false;
   }
 
-  uint8_t available = 0;
-  for (uint8_t i = 0; i < randomTrackCount; ++i) {
-    if (!randomTrackUsed[i]) available++;
+  const char *chosenName = randomTracks[nextRandomIndex];
+  nextRandomIndex++;
+  if (nextRandomIndex >= randomTrackCount) {
+    nextRandomIndex = 0;
   }
-
-  if (available == 0) {
-    Serial.println(F("Random playlist exhausted; resetting usage."));
-    resetRandomPlaylistUsage();
-    available = randomTrackCount;
-  }
-
-  if (available == 0) {
-    Serial.println(F("No alternate MP3 files found on SD."));
-    return false;
-  }
-
-  uint8_t pick = random(available);
-  uint8_t chosenIndex = 0;
-  for (uint8_t i = 0; i < randomTrackCount; ++i) {
-    if (randomTrackUsed[i]) continue;
-    if (pick == 0) {
-      chosenIndex = i;
-      break;
-    }
-    pick--;
-  }
-
-  char chosenName[13] = {0};
-  File dir = SD.open("/");
-  if (!dir) {
-    Serial.println(F("Failed to reopen SD root to resolve chosen track."));
-    return false;
-  }
-
-  uint8_t indexCounter = 0;
-  while (true) {
-    File entry = dir.openNextFile();
-    if (!entry) break;
-
-    if (!entry.isDirectory()) {
-      const char *entryName = entry.name();
-      if (isPlayableMp3(entryName)) {
-        if (indexCounter == chosenIndex) {
-          uint8_t j = 0;
-          for (; entryName[j] != '\0' && j < 12; ++j) {
-            chosenName[j] = entryName[j];
-          }
-          chosenName[j] = '\0';
-          entry.close();
-          break;
-        }
-        indexCounter++;
-      }
-    }
-    entry.close();
-  }
-  dir.close();
 
   if (chosenName[0] == '\0') {
-    Serial.println(F("Failed to resolve random track name."));
-    return false;
+    Serial.println(F("Random playlist entry empty; refreshing list."));
+    refreshRandomTrackList();
+    if (randomTrackCount == 0) return false;
+    chosenName = randomTracks[nextRandomIndex];
+    nextRandomIndex = (nextRandomIndex + 1) % randomTrackCount;
   }
-
-  randomTrackUsed[chosenIndex] = true;
 
   Serial.print(F("Random MP3 selected: "));
   Serial.println(chosenName);
@@ -465,6 +430,8 @@ void handleSensors() {
   static float d1 = -1.0f, d2 = -1.0f;
   static uint8_t inRangeStreak = 0;
   static unsigned long inRangeStartMs = 0;
+  static uint8_t outOfRangeStreak = 0;
+  static bool wasInRange = false;
 
   unsigned long now = millis();
   if (now - lastPingMs >= PING_GAP_MS) {
@@ -475,6 +442,12 @@ void handleSensors() {
   }
 
   bool inRange = ( (d1 > 0 && d1 < TRIGGER_CM) || (d2 > 0 && d2 < TRIGGER_CM) );
+  float releaseThreshold = TRIGGER_CM + TRIGGER_RELEASE_MARGIN_CM;
+  bool withinReleaseBand = (
+    (d1 > 0 && d1 < releaseThreshold) ||
+    (d2 > 0 && d2 < releaseThreshold)
+  );
+  bool fullyOut = !withinReleaseBand;
 
   if (inRange) {
     if (inRangeStreak < TRIGGER_CONFIRMATIONS) {
@@ -483,14 +456,22 @@ void handleSensors() {
     if (inRangeStartMs == 0) {
       inRangeStartMs = now;
     }
+    outOfRangeStreak = 0;
   } else {
     inRangeStreak = 0;
     inRangeStartMs = 0;
+    if (fullyOut) {
+      if (outOfRangeStreak < TRIGGER_RELEASE_CONFIRMATIONS) {
+        outOfRangeStreak++;
+      }
+    } else {
+      outOfRangeStreak = 0;
+    }
   }
 
   bool holdSatisfied = (TRIGGER_HOLD_MS == 0UL) ? true : ((inRangeStartMs != 0) && ((now - inRangeStartMs) >= TRIGGER_HOLD_MS));
   bool confirmedRange = (inRangeStreak >= TRIGGER_CONFIRMATIONS) && holdSatisfied;
-  static bool wasInRange = false;
+  bool nextWasInRange = wasInRange;
 
   if (confirmedRange && !wasInRange && (now - lastTriggerPrintMs >= MUTE_INTERVAL_MS)) {
     Serial.println(F("TRIGGERED (edge)"));
@@ -509,10 +490,19 @@ void handleSensors() {
       Serial.println(F("Already playing, skipping OUT pulse to keep sync"));
     }
     lastTriggerPrintMs = now;
+    nextWasInRange = true;
+  } else if (!confirmedRange && wasInRange) {
+    if (outOfRangeStreak >= TRIGGER_RELEASE_CONFIRMATIONS) {
+      nextWasInRange = false;
+    }
   }
 
-  digitalWrite(LED_BUILTIN, confirmedRange ? HIGH : LOW);
-  wasInRange = confirmedRange;
+  digitalWrite(LED_BUILTIN, nextWasInRange ? HIGH : LOW);
+  wasInRange = nextWasInRange;
+
+  if (!confirmedRange && !wasInRange) {
+    outOfRangeStreak = 0;  // reset streak once fully disarmed
+  }
 }
 
 void handleSerialTrigger() {
