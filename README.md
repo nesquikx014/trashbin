@@ -1,10 +1,8 @@
-https://github.com/Nickdev8/trashbin
-https://photos.nickesselman.nl/s/1234
-https://photos.nickesselman.nl/s/431
+### [Click here to open my project on my site](http://nickesselman.nl/?project=discotrashbin)  
+Explore the interface before diving into the build details.
 
-# Trash Bin Prank Rig
-
-Arduino sketch for a trash-bin jump scare: two ultrasonic sensors watch for people, a servo opens the lid, and an Adafruit Music Maker shield plays MP3s while an auxiliary NPN output flashes external FX.
+# Trash Bin
+Arduino sketch for a trash-bin: two ultrasonic sensors watch for people, a servo opens the lid, and an Adafruit Music Maker shield plays MP3s while an auxiliary NPN output flashes external FX.
 
 **Setup:** Load the sketch, drop `TRIGGER.MP3` and `SEQ1-3.MP3` on the SD card, wire the sensors, servo (pin 9), and button (A0), then power the rig.
 
